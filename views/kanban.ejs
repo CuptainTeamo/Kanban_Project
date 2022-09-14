@@ -1,0 +1,40 @@
+<%- include("header") -%>
+  <div class="full-screen-container">
+    <div class="kanban">
+      <% lists.forEach((list) => { %>
+        <div class="kanban__column">
+          <div class="kanban__column-title"><%= list.name %></div>
+          <% list.items.forEach((item) => { %>
+            <form name="dragstartForm" action="/dragstart" method="post">
+              <input type="hidden" name="input" value="<%= item._id %>">
+              <input type="hidden" name="listName" value="<%= list.name %>">
+              <input type="hidden" name="itemName" value="<%= item.name %>">
+            </form>
+            <form name="deleteForms" action="/delete" method="post">
+              <div class="kanban__items" value="<%= item._id %>" >
+                <input type="hidden" name="listName" value="<%= list.name %>">
+                <div id="<%= item._id %>" class="kanban__item-input" draggable="true">
+                  <%= item.name %>
+                </div>
+                <input type="hidden" name="input" value="<%= item._id %>">
+                <input type="hidden" name="input" value="<%= item._id %>" >
+              </div>
+            </form>
+            <form action="/drop" method="post" class="dropForm">
+              <div>
+                <input type="hidden" name="listName" value="<%= list.name %>">
+                <input type="hidden" name="input" value="<%= item._id %>" >
+                <div class="kanban__dropzone"></div>
+              </div>
+            </form>
+          <% }) %>
+          <form action="/" method="post">
+            <input type="text" name="newItemName" placeholder="New Item" autocomplete="off">
+            <button class="kanban__add-item" type="submit" name="list" value="<%= list.name %>">+ Add</button>
+          </form>
+        </div>
+      <% }) %>
+    </div>
+    <script src="js/main.js" type="module"></script>
+  </div>
+<%- include("footer") -%>
